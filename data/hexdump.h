@@ -1,8 +1,6 @@
-#ifndef CS61_HEXDUMP_HH
-#define CS61_HEXDUMP_HH
-#include <cstdio>
-#include <cassert>
-#include <cstdlib>
+#ifndef CS61_HEXDUMP_H
+#define CS61_HEXDUMP_H
+#include <stdio.h>
 
 // hexdump(ptr, size)
 //    Print a hexdump of the `size` bytes of data starting at `ptr`

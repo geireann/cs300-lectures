@@ -1,9 +1,7 @@
-#include <cstdio>
-#include <cstdlib>
+#include <stdio.h>
+#include <stdlib.h>
 
-extern "C" {
 int add(int a, int b);
-}
 
 int main(int argc, char* argv[]) {
     if (argc <= 2) {

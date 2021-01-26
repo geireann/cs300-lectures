@@ -1,12 +1,12 @@
-#include <cstdio>
-#include <cstdlib>
-#include <cassert>
-#include <cstring>
-#include <cerrno>
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+#include <errno.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <cinttypes>
+#include <inttypes.h>
 #include <unistd.h>
 
 // filesize(f)

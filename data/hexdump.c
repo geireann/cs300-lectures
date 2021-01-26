@@ -1,5 +1,5 @@
-#include "hexdump.hh"
-#include <cassert>
+#include "hexdump.h"
+#include <assert.h>
 
 static void fhexdump_ascii(FILE* f, const unsigned char* p, size_t pos);
 
