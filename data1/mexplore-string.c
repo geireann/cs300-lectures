@@ -8,7 +8,7 @@ char global_st[] = "Hello CS131!";
 void f() {
     char local_st[] = "We <3 systems";
 
-    hexdump(global_st, 11);
+    hexdump(global_st, 12);
     hexdump(local_st, 13);
 
     //char* allocated_st = (char*)malloc(1);
