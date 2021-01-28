@@ -1,5 +1,5 @@
 CC=clang
-PROGRAMS = add addin mexplore mexplore-with-dynamic mexplore-string
+PROGRAMS = add addin mexplore mexplore-with-dynamic mexplore-string ptr-intro
 ALLPROGRAMS = $(PROGRAMS) $(TESTQSPROGRAMS)
 
 all: $(ALLPROGRAMS)
@@ -20,6 +20,9 @@ addin: addin.o hexdump.o
 
 addf.o: addf.c $(BUILDSTAMP)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(DEPCFLAGS) $(O) -fomit-frame-pointer -o $@ -c $<
+
+ptr-intro: ptr-intro.o
+	$(CC) $(CCFLAGS) $(LDFLAGS) $(O) -o $@ $^
 
 clean:
 	rm -rf $(ALLPROGRAMS) *.o $(DEPSDIR)
