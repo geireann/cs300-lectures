@@ -3,3 +3,5 @@ addin
 mexplore
 mexplore-string
 mexplore-with-dynamic
+mexplore-uninitialized
+ptr-intro
