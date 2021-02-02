@@ -4,7 +4,7 @@
 #include <assert.h>
 #include "hexdump.h"
 
-char global_st[] = "Hello CS131!";
+char global_st[] = "Hello CS300!";
 
 void f() {
     char local_st[] = "We <3 systems";
