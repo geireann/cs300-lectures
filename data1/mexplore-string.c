@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <assert.h>
 #include "hexdump.h"
 
@@ -11,10 +12,8 @@ void f() {
     hexdump(global_st, 12);
     hexdump(local_st, 13);
 
-    //char* allocated_st = (char*)malloc(1);
-    //sprintf(allocated_st, "C programming is cool");
-
-    //hexdump(allocated_st, strlen(allocated_st));
+    //char* allocated_st = (char*)malloc(100);
+    //hexdump(allocated_st, 100);
 }
 
 int main() {
