@@ -1,5 +1,5 @@
 CC=clang
-PROGRAMS = add addin mexplore mexplore-with-dynamic mexplore-string mexplore-uninitialized ptr-intro
+PROGRAMS = add addin mexplore mexplore-with-dynamic mexplore-string mexplore-uninitialized mexplore-array ptr-intro
 ALLPROGRAMS = $(PROGRAMS) $(TESTQSPROGRAMS)
 
 all: $(ALLPROGRAMS)
@@ -9,7 +9,7 @@ include ../common/rules.mk
 %.o: %.c $(BUILDSTAMP)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(DEPCFLAGS) $(O) -o $@ -c $<
 
-mexplore mexplore-with-dynamic mexplore-string mexplore-uninitialized: %: %.o hexdump.o
+mexplore mexplore-with-dynamic mexplore-string mexplore-array mexplore-uninitialized: %: %.o hexdump.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -O0 -o $@ $^
 
 add: add.o addf.o hexdump.o
