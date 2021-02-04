@@ -22,11 +22,11 @@ void f() {
 
     hexdump(arr2, sizeof(arr2));
 
-    printf("%d\n", sizeof(int));
-    printf("%d\n", sizeof(char));
-    printf("%d\n", sizeof(char*));
-    printf("%d\n", sizeof(arr));
-    printf("%d\n", sizeof((int*)arr));
+    printf("%lu\n", sizeof(int));
+    printf("%lu\n", sizeof(char));
+    printf("%lu\n", sizeof(char*));
+    printf("%lu\n", sizeof(arr));
+    printf("%lu\n", sizeof((int*)arr));
 }
 
 int main() {
