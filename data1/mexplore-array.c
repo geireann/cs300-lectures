@@ -5,7 +5,7 @@
 
 void f() {
     // initializer list array syntax
-    int arr[] = { 1, 2, 513, 4 };
+    int arr[] = { 1, 2, 3, 4 };
 
     hexdump(arr, 16);
 
