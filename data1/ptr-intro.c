@@ -13,6 +13,6 @@ void f() {
     //printf("value of *ptr: %d\n", *ptr);
 }
 
-int main(int argc, char* argv[]) {
+int main() {
   f();
 }
