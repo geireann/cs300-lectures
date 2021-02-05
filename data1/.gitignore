@@ -5,6 +5,7 @@ mexplore-array
 mexplore-string
 mexplore-with-dynamic
 mexplore-uninitialized
+mexplore-order.*opt
 mexplore-struct
 linked-list
 ptr-intro
