@@ -1,5 +1,5 @@
 CC=clang
-PROGRAMS = add addin mexplore mexplore-with-dynamic mexplore-string mexplore-uninitialized mexplore-array mexplore-struct mexplore-order.opt mexplore-order.noopt mexplore-structalign linked-list ptr-intro
+PROGRAMS = add addin mexplore mexplore-with-dynamic mexplore-string mexplore-uninitialized mexplore-array mexplore-struct mexplore-order.opt mexplore-order.noopt mexplore-structalign linked-list ptr-intro signed-int ubexplore.noopt ubexplore.opt ubexplore2.noopt ubexplore2.opt
 ALLPROGRAMS = $(PROGRAMS) $(TESTQSPROGRAMS)
 
 all: $(ALLPROGRAMS)
@@ -17,7 +17,7 @@ CFLAGS += -Wno-unused-parameter
 %.noopt.o: %.c $(BUILDSTAMP)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -O0 $(DEPCFLAGS) -o $@ -c $<
 
-mexplore mexplore-with-dynamic mexplore-string mexplore-array mexplore-uninitialized mexplore-struct mexplore-structalign linked-list: %: %.o hexdump.o
+mexplore mexplore-with-dynamic mexplore-string mexplore-array mexplore-uninitialized mexplore-struct mexplore-structalign linked-list signed-int: %: %.o hexdump.o
 	$(CC) $(CFLAGS) $(LDFLAGS) -O0 -o $@ $^
 
 mexplore-order.noopt: %.noopt: %.noopt.o hexdump.o
@@ -37,6 +37,12 @@ addf.o: addf.c $(BUILDSTAMP)
 
 ptr-intro: ptr-intro.o
 	$(CC) $(CFLAGS) $(LDFLAGS) $(O) -o $@ $^
+
+ubexplore.noopt ubexplore2.noopt: %.noopt: %.noopt.o hexdump.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -O0 -o $@ $^
+
+ubexplore.opt ubexplore2.opt: %.opt: %.opt.o hexdump.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -O3 -o $@ $^
 
 clean:
 	rm -rf $(ALLPROGRAMS) *.o $(DEPSDIR)
