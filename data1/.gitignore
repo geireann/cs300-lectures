@@ -7,6 +7,7 @@ mexplore-with-dynamic
 mexplore-uninitialized
 mexplore-order.*opt
 mexplore-struct
+mexplore-structalign
 linked-list
 ptr-intro
 signed-int
