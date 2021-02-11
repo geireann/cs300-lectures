@@ -1,14 +1,19 @@
+PROGRAMS = call04f #backwards asm06.o
+#	$(sort $(patsubst %.c,%,$(wildcard call[0-9]f.c)))
+
 ASMS := $(patsubst %.c,%.s,$(sort $(wildcard asm[0-9][0-9].c)))
-ASM_OBJECTS := $(patsubst %.s,%.o,$(ASMS))
-ASM_PROGRAMS := $(shell grep -l main $(wildcard asm[0-9][0-9].s asm[0-9][0-9].c) | sed 's/\.[cs]*//' | sort -u)
+CF_ASMS := $(patsubst %.c,%.s,$(sort $(wildcard controlflow[0-9][0-9].c)))
+CALL_ASMS := $(patsubst %.c,%.s,$(sort $(wildcard call[0-9][0-9].c)))
+CALL_ASM_OBJECTS := $(patsubst %.s,%.o,$(CALL_ASMS))
+ASM_PROGRAMS := $(shell grep -l main $(wildcard call[0-9][0-9].s call[0-9][0-9].c) | sed 's/\.[cs]*//' | sort -u)
 DEFAULT_ASM_CXXFLAGS = -O1
 DEFAULT_ASM_CXXFLAGS_DEBUG = -g $(DEFAULT_ASM_CXXFLAGS)
 
-PROGRAMS = $(ASM_PROGRAMS)
+-include conf.mk
 
-all: $(ASMS) $(PROGRAMS)
+all: asm $(PROGRAMS)
 
-asm: cleanasm $(ASMS) $(PROGRAMS)
+asm: cleanasm $(ASMS) $(CF_ASMS) $(CALL_ASMS)
 
 ALLPROGRAMS = $(PROGRAMS)
 
@@ -54,26 +59,28 @@ $(ASM_PROGRAMS): %: %.s
 	  if test -z "$$ARGS"; then ARGS="$(DEFAULT_ASM_CXXFLAGS)"; fi; \
 	  $(call xrun,$(CXX) $$CXXFLAGS $$ARGS -o $@ $<,ASSEMBLE $@)
 
-ubexplore.opt ubexplore2.opt: %: %.o hexdump.opt.o
-	$(CC) $(CFLAGS) $(DEPCFLAGS) -O3 -g -o $@ $^
-
-ubexplore.noopt ubexplore2.noopt: %: %.o hexdump.noopt.o
-	$(CC) $(CFLAGS) $(DEPCFLAGS) -O0 -g -o $@ $^
-
-mexplore-structalign signed-int: %: %.o hexdump.o
-	$(CC) $(CFLAGS) $(DEPCFLAGS) -O0 -g -o $@ $^
-
 allasmc.txt: $(wildcard asm*.c) always
 	for i in asm*.c; do echo $$i; echo ========; cat $$i; echo; echo; done > $@
 
 allasms.txt: $(patsubst %.c,%.s,$(wildcard asm*.c)) always
 	for i in asm*.s; do echo $$i; echo ========; cat $$i; echo; echo; done > $@
 
+$(CALL_ASM_OBJECTS): %.o: %.s $(BUILDSTAMP)
+	$(call run,$(CC) -o $@ -c,ASSEMBLE,$<)
+
+call04f: call04f.c call04.c
+	$(CC) $(CFLAGS) -fomit-frame-pointer -O1 -o $@ $^
+
+#backwards: backwards.c asm06.c
+#	$(CC) $(CFLAGS) -fomit-frame-pointer -O1 -o $@ $^
 
 clean:
 	rm -f $(ALLPROGRAMS) *.o
+	rm -rf $(DEPSDIR) *.dSYM
 
 cleanasm: clean
 	rm -f $(patsubst %.c,%.s,$(wildcard asm*.c))
+	rm -f $(patsubst %.c,%.s,$(wildcard controlflow*.c))
+	rm -f $(patsubst %.c,%.s,$(wildcard call*.c))
 
 .PHONY: all clean cleanasm asm
