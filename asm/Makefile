@@ -17,7 +17,7 @@ asm: cleanasm $(ASMS) $(CF_ASMS) $(CALL_ASMS)
 
 ALLPROGRAMS = $(PROGRAMS)
 
-O = 1
+O = 2
 include ../common/rules.mk
 
 UNSAFEFLAGS := -U_FORTIFY_SOURCE -fno-stack-protector $(if $(ISLINUX),-no-pie,)
