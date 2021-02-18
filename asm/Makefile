@@ -20,10 +20,7 @@ ALLPROGRAMS = $(PROGRAMS)
 O = 2
 include ../common/rules.mk
 
-UNSAFEFLAGS := -U_FORTIFY_SOURCE -fno-stack-protector $(if $(ISLINUX),-no-pie,)
-
-%.o: %.cc $(BUILDSTAMP)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(DEPCFLAGS) $(O) -o $@ -c $<
+UNSAFEFLAGS := -U_FORTIFY_SOURCE -fno-stack-protector -no-pie
 
 attackme.o: attackme.cc $(BUILDSTAMP)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(DEPCFLAGS) -O1 -o $@ -c $<
@@ -43,6 +40,8 @@ attackme: attackme.o
 attackme.unsafe: attackme.unsafe.o
 	@$(call xrun,$(CXX) $(CXXFLAGS) $(UNSAFEFLAGS) $(O) $(LDFLAGS) -o $@ $^ $(LIBS),LINK $@)
 
+%.o: %.cc $(BUILDSTAMP)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(DEPCFLAGS) $(O) -o $@ -c $<
 
 %.noopt.o: %.c $(BUILDSTAMP)
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(DEPCFLAGS) -O0 -o $@ -c $<
