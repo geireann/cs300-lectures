@@ -1,4 +1,4 @@
-PROGRAMS = cpp1 cpp2
+PROGRAMS = cpp1 cpp2 cpp3 cpp4
 all: $(PROGRAMS)
 
 ALLPROGRAMS = $(PROGRAMS)
