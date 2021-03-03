@@ -56,6 +56,9 @@ void kernel(const char* command) {
     // initialize hardware
     init_hardware();
 
+    // enable timer interrupt
+    init_timer(1000);
+
     // clear screen
     console_clear();
 
@@ -64,8 +67,13 @@ void kernel(const char* command) {
     for (vmiter it(kernel_pagetable);
          it.va() < MEMSIZE_PHYSICAL;
          it += PAGESIZE) {
-        if (it.va() != 0) {
+        if (it.va() >= PROC_START_ADDR || it.va() == CONSOLE_ADDR) {
+            // PTE_P =  page is present
+            // PTE_W =  page is writable
+            // PTE_U =  page is accessible from userspace
             it.map(it.va(), PTE_P | PTE_W | PTE_U);
+        } else if (it.va() != 0 && it.va() < PROC_START_ADDR) {
+            it.map(it.va(), PTE_P | PTE_W);
         } else {
             it.map(it.va(), 0);
         }
@@ -134,9 +142,6 @@ void process_setup(pid_t pid, const char* program_name) {
     pages[stack_addr / PAGESIZE].refcount = 1;
     ptable[pid].regs.reg_rsp = stack_addr + PAGESIZE;
 
-    // allow process to control interrupts
-    ptable[pid].regs.reg_rflags |= EFLAGS_IOPL_3;
-
     // mark process as runnable
     ptable[pid].state = P_RUNNABLE;
 }
@@ -175,6 +180,10 @@ void exception(regstate* regs) {
     switch (regs->reg_intno) {
 
     case INT_PF: {
+        current->state = P_BROKEN;
+        schedule();
+
+
         // Analyze faulting address and access type.
         uintptr_t addr = rdcr2();
         const char* entity = regs->reg_errcode & PFERR_USER
@@ -189,6 +198,21 @@ void exception(regstate* regs) {
               entity, current->pid, addr, operation, problem, regs->reg_rip);
         goto unhandled;
     }
+
+    case 32: // timer interrupt
+        lapicstate::get().ack();
+        schedule();
+
+    case INT_GP:
+        // general protection fault
+        if (regs->reg_cs & 3) {
+           // from user space
+           current->state = P_BROKEN;
+           schedule();
+        } else {
+          // from the kernel
+          goto unhandled;
+        }
 
     default:
     unhandled:
