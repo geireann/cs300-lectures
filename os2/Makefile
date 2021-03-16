@@ -1,4 +1,6 @@
-PROGRAMS = fork1 fork2 fork2b fork3 forkmix-syscall forkmix-stdio
+PROGRAMS = fork1 fork2 fork2b fork3 forkmix-syscall forkmix-stdio \
+           manyfork myecho runmyecho forkmyecho spawnmyecho \
+           waitdemo selfpipe childpipe
 
 all: $(PROGRAMS)
 
