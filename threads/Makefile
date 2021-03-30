@@ -1,6 +1,7 @@
 PROGRAMS = incr-basic incr-basic.noopt incr-atomic \
            incr-mutex bbuffer-basic bbuffer-scoped \
-           bbuffer-mutex bbuffer-cond
+           bbuffer-mutex bbuffer-cond \
+           passtheball passtheball-mutex passtheball-deadlock
 
 all: $(PROGRAMS)
 
